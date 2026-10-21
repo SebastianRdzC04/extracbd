@@ -1,0 +1,14 @@
+# Variables de entorno y secretos
+.env
+*.env.local
+
+# Asegurar que la plantilla de ejemplo sí se versione
+!.env.example
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Volúmenes o datos temporales locales
+.data/
+*.log

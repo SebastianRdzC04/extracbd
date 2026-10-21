@@ -1,0 +1,3 @@
+-- Crear una consulta que muestre las ganancias por región de la base de datos de NorthWind, --
+-- deberán mostrar cada consulta que se utilizo para llegar a la consulta final, --
+-- justificando cada paso siguieron para llegar a la consulta final. --

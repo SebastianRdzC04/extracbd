@@ -1,0 +1,44 @@
+services:
+  db-practica1:
+    image: mysql:8.0
+    container_name: db_practica1
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PRACTICA1_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${PRACTICA1_DB_NAME}
+      MYSQL_USER: ${PRACTICA1_DB_USER}
+      MYSQL_PASSWORD: ${PRACTICA1_DB_PASSWORD}
+    ports:
+      - "${PRACTICA1_DB_PORT:-3307}:3306"
+    volumes:
+      - practica1_data:/var/lib/mysql
+      - ./practica1/database.sql:/docker-entrypoint-initdb.d/01-database.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${PRACTICA1_DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db-practica2:
+    image: mysql:8.0
+    container_name: db_practica2
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PRACTICA2_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${PRACTICA2_DB_NAME}
+      MYSQL_USER: ${PRACTICA2_DB_USER}
+      MYSQL_PASSWORD: ${PRACTICA2_DB_PASSWORD}
+    ports:
+      - "${PRACTICA2_DB_PORT:-3308}:3306"
+    volumes:
+      - practica2_data:/var/lib/mysql
+      - ./practica2/database.sql:/docker-entrypoint-initdb.d/01-database.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${PRACTICA2_DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  practica1_data:
+  practica2_data:
