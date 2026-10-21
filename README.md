@@ -1,41 +1,64 @@
-# Infraestructura de Bases de Datos - Prácticas
+# 📊 Entorno de Análisis de Bases de Datos & Encargos
 
-Este proyecto contiene la configuración con Docker Compose y Makefile para levantar de manera independiente o conjunta los entornos de base de datos para la **Práctica 1** (`pubs`) y la **Práctica 2** (`northwind`).
-
----
-
-## 🛠️ Requisitos Previos
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) en ejecución.
-- `make` instalado en tu sistema.
+Infraestructura contenerizada con **Docker**, **Docker Compose** y **Makefile** para ejecutar y auditar análisis de datos avanzados sobre las bases de datos relacionales **`pubs`** y **`northwind`** (MySQL 8.0).
 
 ---
 
-## 🚀 Inicio Rápido
+## 🚀 Inicio Rápido (Zero Setup)
 
-### 1. Variables de entorno
-El archivo `.env` ya viene configurado con valores por defecto. Si necesitas cambiar contraseñas o puertos, puedes editar `.env` (guíate con `.env.example`).
+Solo requieres tener **Docker Desktop** encendido.
 
-### 2. Levantar los contenedores con Make
+1. **Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/SebastianRdzC04/extracbd.git
+   cd extracbd
+   ```
 
-- **Levantar solo Práctica 1 (`pubs` en puerto 3307):**
-  ```bash
-  make db-practica1
-  ```
+2. **Copiar variables de entorno (opcional si deseas cambiar puertos o credenciales):**
+   ```bash
+   cp .env.example .env
+   ```
+   *(Si no se define `.env`, se usan automáticamente los valores predeterminados seguros).*
 
-- **Levantar solo Práctica 2 (`northwind` en puerto 3308):**
-  ```bash
-  make db-practica2
-  ```
-
-- **Levantar ambas bases de datos:**
-  ```bash
-  make db-all
-  ```
+3. **Ejecutar cualquier encargo con Make:**
+   Los scripts detectan automáticamente si el contenedor está apagado, lo levantan y muestran los resultados estilizados en la terminal con tablas formateadas y análisis forense paso a paso:
+   ```bash
+   make encargo-p1   # Práctica 1: Ganancias por Autor (pubs)
+   make encargo1     # Práctica 2 - Encargo 1: Ganancias por Región (northwind)
+   make encargo2     # Práctica 2 - Encargo 2: Productos Menos Vendidos (northwind)
+   make encargo3     # Práctica 2 - Encargo 3: Ganancias Editorial x Autor (pubs)
+   ```
 
 ---
 
-## 📊 Datos de Conexión
+## 📑 Catálogo de Encargos
+
+| Comando Make | Script Shell | Base de Datos | Descripción / Entregable |
+| :--- | :--- | :--- | :--- |
+| `make encargo-p1` | [`practica1/ejecutar_encargo.sh`](practica1/ejecutar_encargo.sh) | `pubs` (3307) | **Ganancias por Autor**: Auditoría contra línea base ($3,863.80), resolución de duplicidad en libros multi-autor mediante `royaltyper`, detección de libros huérfanos y Master Query para los 23 autores. |
+| `make encargo1` | [`practica2/ejecutar_encargo1.sh`](practica2/ejecutar_encargo1.sh) | `northwind` (3308) | **Ganancias por Región**: Diagnóstico del error del 394.5% por unión cartesiana de territorios, desacoplamiento empleado-región y cuadre al centavo de los $1,354,458.59 facturados. |
+| `make encargo2` | [`practica2/ejecutar_encargo2.sh`](practica2/ejecutar_encargo2.sh) | `northwind` (3308) | **Productos Menos Vendidos por Región y Año**: Matriz pivoteada (Año x 4 Regiones) con desempate mediante funciones de ventana `DENSE_RANK()` y certificación celda por celda. |
+| `make encargo3` | [`practica2/ejecutar_encargo3.sh`](practica2/ejecutar_encargo3.sh) | `pubs` (3307) | **Ganancias por Editorial y Autor**: Reporte jerárquico multinivel con `ROLLUP`, matriz cruzada bidimensional (Editorial x Autor) y conciliación del 100% de la facturación. |
+| `make encargos` | [`ejecutar_todos.sh`](ejecutar_todos.sh) | Ambas | Ejecuta la batería completa de los 4 encargos de forma secuencial. |
+
+---
+
+## 🛠️ Comandos de Infraestructura Docker
+
+| Comando | Acción |
+| :--- | :--- |
+| `make db-practica1` | Levanta únicamente el contenedor de la **Práctica 1** (`pubs` en puerto `3307`) |
+| `make db-practica2` | Levanta únicamente el contenedor de la **Práctica 2** (`northwind` en puerto `3308`) |
+| `make db-all` | Levanta ambos contenedores simultáneamente |
+| `make status` | Consulta el estado y healthcheck de los contenedores (`docker compose ps`) |
+| `make logs` | Muestra logs interactivos en vivo |
+| `make stop` | Pausa los contenedores conservando datos |
+| `make down` | Detiene y remueve los contenedores |
+| `make clean-volumes` | **Reset completo:** Elimina volúmenes persistentes y reconstruye las BDs desde los `.sql` originales |
+
+---
+
+## 🔑 Credenciales y Parámetros de Conexión
 
 | Parámetro | Práctica 1 | Práctica 2 |
 | :--- | :--- | :--- |
@@ -47,22 +70,6 @@ El archivo `.env` ya viene configurado con valores por defecto. Si necesitas cam
 | **Password Root** | `rootpassword` | `rootpassword` |
 | **Usuario Regular** | `user_practica1` | `user_practica2` |
 | **Password Regular** | `userpassword` | `userpassword` |
+| **Volumen de Datos** | `practica1_data` | `practica2_data` |
 
-> Los scripts iniciales `database.sql` de cada práctica se ejecutan automáticamente en la primera inicialización del contenedor.
-
----
-
-## 📋 Comandos Make Disponibles
-
-| Comando | Descripción |
-| :--- | :--- |
-| `make db-practica1` | Levanta el contenedor de la Práctica 1 |
-| `make db-practica2` | Levanta el contenedor de la Práctica 2 |
-| `make db-all` | Levanta ambos contenedores |
-| `make status` | Consulta el estado de los contenedores (`docker compose ps`) |
-| `make logs` | Muestra los logs en vivo de todos los servicios |
-| `make logs-practica1` | Muestra los logs del contenedor de la Práctica 1 |
-| `make logs-practica2` | Muestra los logs del contenedor de la Práctica 2 |
-| `make stop` | Pausa los contenedores sin borrar datos |
-| `make down` | Detiene y remueve los contenedores |
-| `make clean-volumes` | **Atención:** Detiene y elimina los volúmenes para reiniciar las BD desde cero |
+> En la primera inicialización de cada contenedor, MySQL ejecuta automáticamente los scripts maestros `database.sql` montados en `/docker-entrypoint-initdb.d/`.
