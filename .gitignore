@@ -12,3 +12,11 @@ Thumbs.db
 # Volúmenes o datos temporales locales
 .data/
 *.log
+
+# Python y entornos virtuales
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
