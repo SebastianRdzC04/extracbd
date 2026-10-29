@@ -35,11 +35,36 @@ Solo requieres tener **Docker Desktop** encendido.
 
 | Comando Make | Script Shell | Base de Datos | Descripción / Entregable |
 | :--- | :--- | :--- | :--- |
-| `make encargo-p1` | [`practica1/ejecutar_encargo.sh`](practica1/ejecutar_encargo.sh) | `pubs` (3307) | **Ganancias por Autor**: Auditoría contra línea base ($3,863.80), resolución de duplicidad en libros multi-autor mediante `royaltyper`, detección de libros huérfanos y Master Query para los 23 autores. |
+| `make encargo-p1` | [`practica1/ejecutar_encargo.sh`](practica1/ejecutar_encargo.sh) | `pubs` (3307) | **Ganancias por Autor (SQL)**: Auditoría contra línea base ($3,863.80), resolución de duplicidad en libros multi-autor mediante `royaltyper`, detección de libros huérfanos y Master Query para los 23 autores. |
+| `make notebook-p1` | [`practica1/encargo1_pandas.ipynb`](practica1/encargo1_pandas.ipynb) | `pubs` (3307) | **Ganancias por Autor (Jupyter Notebook & Pandas)**: Solución 100% auto-contenida en memoria, restricción estricta de **SQL $\le$ 2 JOINs**, validación cruzada y conciliación al 100%. |
 | `make encargo1` | [`practica2/ejecutar_encargo1.sh`](practica2/ejecutar_encargo1.sh) | `northwind` (3308) | **Ganancias por Región**: Diagnóstico del error del 394.5% por unión cartesiana de territorios, desacoplamiento empleado-región y cuadre al centavo de los $1,354,458.59 facturados. |
 | `make encargo2` | [`practica2/ejecutar_encargo2.sh`](practica2/ejecutar_encargo2.sh) | `northwind` (3308) | **Productos Menos Vendidos por Región y Año**: Matriz pivoteada (Año x 4 Regiones) con desempate mediante funciones de ventana `DENSE_RANK()` y certificación celda por celda. |
 | `make encargo3` | [`practica2/ejecutar_encargo3.sh`](practica2/ejecutar_encargo3.sh) | `pubs` (3307) | **Ganancias por Editorial y Autor**: Reporte jerárquico multinivel con `ROLLUP`, matriz cruzada bidimensional (Editorial x Autor) y conciliación del 100% de la facturación. |
 | `make encargos` | [`ejecutar_todos.sh`](ejecutar_todos.sh) | Ambas | Ejecuta la batería completa de los 4 encargos de forma secuencial. |
+
+---
+
+## 🐼 Práctica 1 - Encargo 1 en Jupyter Notebook & Pandas (ETL en Memoria)
+
+Implementación con arquitectura **Extract-Transform-Load (ETL) local** en Pandas para resolver el **Encargo 1** bajo la restricción técnica estricta: **Ninguna consulta SQL supera 2 JOINs**. Todo el análisis vive de forma aislada y auto-contenida dentro del Notebook.
+
+### 🏗️ Estructura del Apartado
+```
+practica1/
+├── database.sql                  # Script DDL/DML de la BD pubs (MySQL 8.0)
+├── encargo.sql                   # Solución original en SQL
+├── ejecutar_encargo.sh           # Runner del script SQL con formato ANSI
+├── encargo1_pandas.ipynb         # ⭐ Jupyter Notebook auto-contenido (100% funcional con gráficos)
+├── encargo1_pandas.html          # Reporte web estático para visualización en navegador
+└── ejecutar_notebook.sh          # Runner para re-ejecutar el Notebook y exportar a HTML
+```
+
+### ⚡ Comandos Rápidos:
+```bash
+make notebook-p1         # Re-ejecuta todas las celdas del Notebook y actualiza el HTML
+# o directamente:
+bash practica1/ejecutar_notebook.sh
+```
 
 ---
 
