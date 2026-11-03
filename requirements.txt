@@ -1,0 +1,22 @@
+# Entorno Python para los Notebooks ETL (Pandas / Jupyter)
+# Uso:  make venv-setup
+#
+# Versiones fijadas a las efectivamente certificadas en la ejecución de los
+# Notebooks de Práctica 1 y Práctica 2.
+
+# --- Extracción y modelado ---
+pandas==3.1.0
+numpy==2.5.4
+sqlalchemy==2.1.6
+pymysql==1.2.3
+python-dateutil==4.0.0
+tzdata==2026.6
+
+# --- Visualización ---
+matplotlib==3.11.2
+seaborn==0.13.2
+
+# --- Ejecución headless de Notebooks ---
+nbconvert==7.17.2
+ipykernel==7.4.0
+jupyter-core==5.9.1
